@@ -1,16 +1,15 @@
-import CropSample from "@/components/home/CropSample";
-import Footer from "@/components/home/Footer";
+import SampleDisplay from "@/components/home/SampleDisplay";
+import AiPhotoComponent from "@/components/home/AiPhotoCompont";
 import Hero from "@/components/home/Hero";
-import PhotoEditor from "@/components/common/PhotoEditor";
+import { PromoBanner } from "@/components/home/PromoBanner";
 
 export default function Home() {
 	return (
 		<div>
 			<Hero />
-			<CropSample />
-			<PhotoEditor />
-
-			<Footer />
+			<SampleDisplay />
+			<AiPhotoComponent />
+			<PromoBanner />
 		</div>
 	);
 }

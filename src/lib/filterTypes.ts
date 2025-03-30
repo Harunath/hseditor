@@ -37,4 +37,36 @@ export const FILTERS: Filter[] = [
 			];
 		},
 	},
+	{
+		name: "Vibrance",
+		apply: (image) => {
+			image.filters = [
+				new filters.Vibrance({ vibrance: 1 }),
+				new filters.Gamma(),
+			];
+		},
+	},
+	{
+		name: "Overlay Blend",
+		apply: (image) => {
+			image.filters = [
+				new filters.BlendColor({
+					image: createColorOverlay("#f0f0f0", 0.8),
+					mode: "overlay",
+				}),
+			];
+		},
+	},
 ];
+
+// Helper function to create color overlays
+const createColorOverlay = (color: string, opacity: number) => {
+	const el = document.createElement("canvas");
+	el.width = 100; // Will stretch to image size
+	el.height = 100;
+	const ctx = el.getContext("2d")!;
+	ctx.fillStyle = color;
+	ctx.globalAlpha = opacity;
+	ctx.fillRect(0, 0, el.width, el.height);
+	return new FabricImage(el);
+};

@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Button from "../ui/Button";
+import Link from "next/link";
 
 const Hero = () => {
 	return (
@@ -20,9 +22,11 @@ const Hero = () => {
 					<p>– Your Ultimate AI-Powered Photo Editor!</p>
 				</div>
 				<div className="mt-4">
-					<button className="bg-white/50 text-lg sm:text-xl font-semibold backdrop-blur-2xl text-black px-8 py-2 rounded-full mt-4">
-						Try PE
-					</button>
+					<Button>
+						<Link href={"/edit"} className="px-2 py-1 font-semibold">
+							Try HS EDITOR
+						</Link>
+					</Button>
 				</div>
 			</div>
 		</div>

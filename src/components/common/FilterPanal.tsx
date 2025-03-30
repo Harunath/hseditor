@@ -8,7 +8,9 @@ export default function FilterPanel({
 	onSelectFilter: (filterName: string) => void;
 }) {
 	return (
-		<div className="flex gap-2 p-4 overflow-x-auto">
+		<div
+			className="h-fit md:h-[250px] w-[300px] md:w-fit flex flex-row md:flex-col gap-2 p-4 
+                overflow-x-auto md:overflow-y-auto no-scrollbar flex-nowrap">
 			{FILTERS.map((filter) => (
 				<button
 					key={filter.name}
