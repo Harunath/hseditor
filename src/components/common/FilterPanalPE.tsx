@@ -2,7 +2,7 @@
 "use client";
 import { FILTERS } from "@/lib/filterTypes";
 
-export default function FilterPanel({
+export default function FilterPanelPE({
 	onSelectFilter,
 }: {
 	onSelectFilter: (filterName: string) => void;
@@ -10,8 +10,8 @@ export default function FilterPanel({
 	return (
 		<div className="flex md:flex-col gap-2 w-fit bg-white/10 backdrop-blur-sm p-4 rounded-xl">
 			<div
-				className="h-fit md:h-[250px] w-[300px] md:w-fit flex flex-row md:flex-col gap-2 p-4 
-                overflow-x-auto md:overflow-y-auto no-scrollbar flex-nowrap">
+				className="h-fit w-[300px] md:w-fit flex flex-row gap-2 p-4 
+                overflow-x-auto no-scrollbar flex-nowrap">
 				{FILTERS.map((filter) => (
 					<button
 						key={filter.name}

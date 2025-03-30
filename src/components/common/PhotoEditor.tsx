@@ -17,27 +17,39 @@ export default function PhotoEditor() {
 
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-2xl font-bold mb-4">Photo Editor</h1>
-
-			{!imageUrl && (
-				<Button>
-					<label className="p-2 mb-4 cursor-pointer">
-						Upload Image
-						<input
-							type="file"
-							accept="image/*"
-							onChange={handleFileUpload}
-							className="hidden"
-						/>
-					</label>
-				</Button>
-			)}
-
+			<h1 className="text-2xl font-bold mb-4 flex justify-between items-center">
+				Photo Editor
+			</h1>
 			{imageUrl && (
-				<FabricEditor
-					imageUrl={imageUrl}
-					onSave={(dataUrl) => setSavedImage(dataUrl)}
-				/>
+				<div className="my-4">
+					<Button>
+						<button onClick={() => setImageUrl("")}>change Image</button>
+					</Button>
+				</div>
+			)}
+			{!savedImage && (
+				<div>
+					{!imageUrl && (
+						<Button>
+							<label className="p-2 mb-4 cursor-pointer">
+								Upload Image
+								<input
+									type="file"
+									accept="image/*"
+									onChange={handleFileUpload}
+									className="hidden"
+								/>
+							</label>
+						</Button>
+					)}
+
+					{imageUrl && (
+						<FabricEditor
+							imageUrl={imageUrl}
+							onSave={(dataUrl) => setSavedImage(dataUrl)}
+						/>
+					)}
+				</div>
 			)}
 
 			{savedImage && (
@@ -50,21 +62,19 @@ export default function PhotoEditor() {
 						height={400}
 						width={400}
 					/>
-					<a
-						href={savedImage}
-						download="edited-image.png"
-						className="block mt-2 text-blue-500">
-						Download Full Size
-					</a>
-				</div>
-			)}
-			{imageUrl && (
-				<div className="mb-4">
-					<button
-						onClick={() => setImageUrl("")}
-						className="bg-blue-500 text-white px-4 py-2 mb-4  rounded">
-						change Image
-					</button>
+					<div className="flex items-center gap-x-4">
+						<Button>
+							<a
+								href={savedImage}
+								download="edited-image.png"
+								className="block text-blue-500 hover:text-blue-800">
+								Download Full Size
+							</a>
+						</Button>
+						<Button>
+							<button onClick={() => setSavedImage("")}>Back to edit</button>
+						</Button>
+					</div>
 				</div>
 			)}
 		</div>

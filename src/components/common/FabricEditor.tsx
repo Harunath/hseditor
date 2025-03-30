@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-// import fabric from "@/lib/fabric-init";
-// import fabric from "fabric";
-// import Fabric from "@/lib/fabric-init";
 import { Canvas, FabricImage } from "fabric";
-// import Image from "next/image";
 import { FILTERS } from "@/lib/filterTypes";
-import FilterPanel from "./FilterPanal";
+import Button from "../ui/Button";
+import { IoSwapVertical, IoSwapHorizontal } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
+import { RxReset } from "react-icons/rx";
+import FilterPanelPE from "./FilterPanalPE";
 
 type FabricEditorProps = {
 	imageUrl: string;
@@ -61,10 +61,10 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 			img.src = imageUrl;
 			img.crossOrigin = "anonymous";
 
+			// In your image loading useEffect
 			img.onload = () => {
 				if (!fabricCanvas) return;
 
-				// Calculate scaling to fit canvas
 				const canvasWidth = fabricCanvas.getWidth();
 				const canvasHeight = fabricCanvas.getHeight();
 				const scale = Math.min(
@@ -79,6 +79,11 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 					originY: "center",
 					left: canvasWidth / 2,
 					top: canvasHeight / 2,
+					// Add these properties to lock dimensions
+					lockScalingX: true,
+					lockScalingY: true,
+					lockMovementX: true,
+					lockMovementY: true,
 				});
 
 				fabricCanvas.clear();
@@ -86,24 +91,40 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 				setCurrentImage(fabricImg);
 				fabricCanvas.requestRenderAll();
 			};
-
 			img.onerror = (error) => {
 				console.error("Image loading failed:", error);
 			};
 		};
 
 		setImage();
+		console.log(currentImage);
 	}, [fabricCanvas, imageUrl]);
 
 	const applyFilter = (filterName: string) => {
-		if (!currentImage) return;
+		if (!currentImage || !fabricCanvas) return;
+
+		// Store current dimensions and position before applying filter
+		const originalScaleX = currentImage.scaleX;
+		const originalScaleY = currentImage.scaleY;
+		const originalLeft = currentImage.left;
+		const originalTop = currentImage.top;
 
 		const filter = FILTERS.find((f) => f.name === filterName);
 		if (filter) {
+			// Apply the filter
 			filter.apply(currentImage);
+
+			// Reapply original dimensions after filter
+			currentImage.set({
+				scaleX: originalScaleX,
+				scaleY: originalScaleY,
+				left: originalLeft,
+				top: originalTop,
+			});
 			currentImage.applyFilters();
-			console.log(currentImage.filters);
-			fabricCanvas?.requestRenderAll();
+			console.log(currentImage);
+
+			fabricCanvas.requestRenderAll();
 		}
 	};
 
@@ -223,74 +244,68 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 				/>
 			</div>
 
-			<div className="flex gap-2 w-[90%] mx-auto overflow-x-auto">
-				<button
-					onClick={() => cropToRatio(1, 1)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					1:1
-				</button>
-				<button
-					onClick={() => cropToRatio(4, 6)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					4:6
-				</button>
-				<button
-					onClick={() => cropToRatio(5, 7)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					5:7
-				</button>
-				<button
-					onClick={() => cropToRatio(6, 8)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					6:8
-				</button>
-				<button
-					onClick={() => cropToRatio(8, 8)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					8:8
-				</button>
-				<button
-					onClick={() => cropToRatio(5, 10)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					5:10
-				</button>
-				<button
-					onClick={() => cropToRatio(8, 10)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					8:10
-				</button>
-				<button
-					onClick={() => cropToRatio(10, 12)}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					10:12
-				</button>
+			<div className="relative flex items-center no-scrollbar bg-black p-6 rounded-xl w-fit max-w-[90%] mx-auto overflow-x-auto">
+				<div className="flex items-center gap-x-2 pl-2 pr-2">
+					<Button>
+						<button onClick={() => cropToRatio(4, 6)}>4:6</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(5, 7)}>5:7</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(6, 8)}>6:8</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(8, 8)}>8:8</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(5, 10)}>5:10</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(8, 10)}>8:10</button>
+					</Button>
+					<Button>
+						<button onClick={() => cropToRatio(10, 12)}>10:12</button>
+					</Button>
+				</div>
 			</div>
 
-			<div className="grid grid-cols-2 lg:grid-cols-6 gap-2 w-[90%] mx-auto overflow-x-auto">
-				<button
-					onClick={() => flipImage("horizontal")}
-					className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-					Flip Horizontal
-				</button>
-				<button
-					onClick={() => flipImage("vertical")}
-					className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-					Flip Vertical
-				</button>
-
-				<button
-					onClick={handleSave}
-					className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
-					Save Image
-				</button>
-				<button
-					onClick={resetImage}
-					className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-					Reset
-				</button>
+			<div className="grid grid-cols-2 gap-2 w-[90%] mx-auto overflow-x-auto max-w-[600px]">
+				<Button>
+					<button
+						onClick={() => flipImage("horizontal")}
+						className="flex items-center justify-center gap-x-2 w-fit mx-auto">
+						<span className="hidden md:block">Flip Horizontal</span>
+						<IoSwapHorizontal />
+					</button>
+				</Button>
+				<Button>
+					<button
+						onClick={() => flipImage("vertical")}
+						className="flex items-center justify-center gap-x-2 w-fit mx-auto">
+						<span className="hidden md:block">Flip Vertical</span>
+						<IoSwapVertical />
+					</button>
+				</Button>
+				<Button>
+					<button
+						onClick={handleSave}
+						className="flex items-center justify-center gap-x-2 w-fit mx-auto">
+						<span className="hidden md:block">Save Image</span>
+						<IoMdAdd />
+					</button>
+				</Button>
+				<Button>
+					<button
+						onClick={resetImage}
+						className="flex items-center justify-center gap-x-2 w-fit mx-auto">
+						<span className="hidden md:block">Reset</span>
+						<RxReset />
+					</button>
+				</Button>
 			</div>
 
-			<FilterPanel onSelectFilter={applyFilter} />
+			<FilterPanelPE onSelectFilter={applyFilter} />
 		</div>
 	);
 }

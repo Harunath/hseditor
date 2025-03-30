@@ -49,21 +49,34 @@ export const FILTERS: Filter[] = [
 	{
 		name: "Overlay Blend",
 		apply: (image) => {
+			// Create overlay matching the image dimensions
+			const overlay = createColorOverlay(
+				"#f0f0f0",
+				0.8,
+				image.width! * image.scaleX!,
+				image.height! * image.scaleY!
+			);
+
 			image.filters = [
 				new filters.BlendColor({
-					image: createColorOverlay("#f0f0f0", 0.8),
+					image: overlay,
 					mode: "overlay",
+					alpha: 0.8,
 				}),
 			];
 		},
 	},
 ];
 
-// Helper function to create color overlays
-const createColorOverlay = (color: string, opacity: number) => {
+const createColorOverlay = (
+	color: string,
+	opacity: number,
+	width: number = 100,
+	height: number = 100
+) => {
 	const el = document.createElement("canvas");
-	el.width = 100; // Will stretch to image size
-	el.height = 100;
+	el.width = Math.max(1, Math.floor(width));
+	el.height = Math.max(1, Math.floor(height));
 	const ctx = el.getContext("2d")!;
 	ctx.fillStyle = color;
 	ctx.globalAlpha = opacity;

@@ -175,9 +175,7 @@ export default function SampleCanvas({ imageUrl }: SampleEditorProps) {
 				</ImageMask>
 			</div>
 
-			<div className="flex md:flex-col gap-2 w-fit bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-				<FilterPanel onSelectFilter={applyFilter} />
-			</div>
+			<FilterPanel onSelectFilter={applyFilter} />
 		</div>
 	);
 }

@@ -28,14 +28,19 @@ export default function RootLayout({
 		<html lang="en">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<div className="w-screen min-h-screen  no-scrollbar px-4 sm:px-12 md:px-16 lg:px-36 bg-gradient-to-r from-[#1f1f1f] to-[#131313] text-white">
-					<div className="relative h-24">
+				<div className="w-screen min-h-screen flex flex-col no-scrollbar px-4 sm:px-12 md:px-16 lg:px-36 bg-gradient-to-r from-[#1f1f1f] to-[#131313] text-white">
+					{/* Navbar */}
+					<div className="h-24">
 						<NavBar />
 					</div>
-					<div className="h-[calc(100%-96px)] overflow-auto">
-						{children}
-						<FooterPage />
+
+					{/* Main Content */}
+					<div className="flex-1">
+						<div className="h-full">{children}</div>
 					</div>
+
+					{/* Footer */}
+					<FooterPage />
 				</div>
 			</body>
 		</html>
