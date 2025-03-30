@@ -1,6 +1,7 @@
 // components/FilterPanel.tsx
 "use client";
 import { FILTERS } from "@/lib/filterTypes";
+import Image from "next/image";
 
 export default function FilterPanel({
 	onSelectFilter,
@@ -16,9 +17,15 @@ export default function FilterPanel({
 					<button
 						key={filter.name}
 						onClick={() => onSelectFilter(filter.name)}
-						className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-gray-100">
-						<div className="w-16 h-16 rounded-md bg-gray-200">
-							{/* Preview thumbnail would go here */}
+						className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-100/10 backdrop-blur-sm">
+						<div className="w-16 h-auto rounded-md">
+							<Image
+								src={filter.imgUrl}
+								alt={filter.name}
+								height={64}
+								width={64}
+								className="w-16 h-auto rounded-md"
+							/>
 						</div>
 						<span className="text-xs">{filter.name}</span>
 					</button>

@@ -97,7 +97,6 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 		};
 
 		setImage();
-		console.log(currentImage);
 	}, [fabricCanvas, imageUrl]);
 
 	const applyFilter = (filterName: string) => {
@@ -122,7 +121,6 @@ export default function FabricEditor({ imageUrl, onSave }: FabricEditorProps) {
 				top: originalTop,
 			});
 			currentImage.applyFilters();
-			console.log(currentImage);
 
 			fabricCanvas.requestRenderAll();
 		}
