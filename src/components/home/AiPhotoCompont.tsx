@@ -93,7 +93,7 @@ const AiPhotoComponent = () => {
 					with the help of AI.
 				</p>
 				<Button>
-					<p className="flex items-center gap-x-2 p-2 text-white ">
+					<p className="flex items-center gap-x-2 p-2">
 						Discover AI Photos <FaExternalLinkAlt />
 					</p>
 				</Button>
